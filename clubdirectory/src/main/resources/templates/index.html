@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <title>Lab – Club Directory</title>
     <style>
         h1 {
@@ -21,6 +23,11 @@
 <body>
 
     <h1>Campus Club Directory</h1>
+
+    <p>Signed in as <strong th:text="${username}">user</strong></p>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Sign out</button>
+    </form>
 
     <!-- Clubs come from /api/clubs -->
     <ul id="clubs"></ul>
@@ -46,6 +53,10 @@
     <p id="message"></p>
 
     <script>
+
+        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
         async function loadClubs() {
 
@@ -91,7 +102,7 @@
 
                 method: "POST",
 
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", [csrfHeader]: csrfToken },
 
                 body: JSON.stringify(club)
 

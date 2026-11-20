@@ -3,6 +3,7 @@ package edu.farmingdale.csc311.clubdirectory.club;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/clubs")
@@ -31,7 +32,7 @@ public class ClubController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Club createClub(@RequestBody Club club) {
+    public Club createClub(@Valid @RequestBody Club club) {
         Club newClub = new Club(
                 club.getName(),
                 club.getCategory(),
